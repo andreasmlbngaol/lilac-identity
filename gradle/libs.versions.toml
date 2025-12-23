@@ -9,6 +9,8 @@ khealth = "3.0.2"
 hikari-cp = "7.0.2"
 bcrypt = "0.4"
 jakarta = "2.0.2"
+mockk = "1.14.7"
+junit-jupiter = "6.0.1"
 
 [libraries]
 server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
@@ -38,7 +40,10 @@ jakarta-mail = { module = "com.sun.mail:jakarta.mail", version.ref = "jakarta" }
 
 # Testing
 server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
+client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 
 [plugins]
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }

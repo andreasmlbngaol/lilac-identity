@@ -1,9 +1,9 @@
 package com.lilac.identity.di
 
-import com.lilac.identity.domain.usecase.AuthUseCae
+import com.lilac.identity.domain.usecase.AuthUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val useCaseModule = module {
-    singleOf(::AuthUseCae)
+    singleOf(::AuthUseCase)
 }

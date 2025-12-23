@@ -1,6 +1,6 @@
 package com.lilac.identity.presentation.routes
 
-import com.lilac.identity.domain.usecase.AuthUseCae
+import com.lilac.identity.domain.usecase.AuthUseCase
 import com.lilac.identity.presentation.mapper.toDto
 import com.lilac.identity.presentation.request.RegisterRequest
 import com.lilac.identity.presentation.response.TokenPairResponse
@@ -13,7 +13,7 @@ import io.ktor.server.routing.route
 import org.koin.ktor.ext.inject
 
 fun Route.authRoutes() {
-    val authUseCase by inject<AuthUseCae>()
+    val authUseCase by inject<AuthUseCase>()
 
     route("/auth") {
         post("/register") {

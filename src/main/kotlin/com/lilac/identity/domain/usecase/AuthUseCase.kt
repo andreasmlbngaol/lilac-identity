@@ -7,7 +7,7 @@ import com.lilac.identity.domain.repository.UserRepository
 import com.lilac.identity.domain.service.JwtService
 import com.lilac.identity.domain.service.PasswordService
 
-class AuthUseCae(
+class AuthUseCase(
     private val userRepository: UserRepository,
     private val userProfileRepository: UserProfileRepository,
     private val mailRepository: MailRepository,

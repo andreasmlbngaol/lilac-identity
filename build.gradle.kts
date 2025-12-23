@@ -43,4 +43,7 @@ dependencies {
 
     testImplementation(libs.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.client.content.negotiation)
+    testImplementation(libs.mockk)
+    testImplementation(libs.junit.jupiter)
 }
