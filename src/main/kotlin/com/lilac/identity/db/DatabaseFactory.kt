@@ -1,5 +1,6 @@
 package com.lilac.identity.db
 
+import com.lilac.identity.db.tables.TokensTable
 import com.lilac.identity.db.tables.UserProfilesTable
 import com.lilac.identity.db.tables.UsersTable
 import com.zaxxer.hikari.HikariConfig
@@ -9,6 +10,7 @@ import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
+@Suppress("unused")
 object DatabaseFactory {
     fun Application.configureDatabase() {
         val cfg = environment.config
@@ -35,7 +37,8 @@ object DatabaseFactory {
     fun createTables() = transaction {
         SchemaUtils.create(
             UsersTable,
-            UserProfilesTable
+            UserProfilesTable,
+            TokensTable
         )
     }
 }

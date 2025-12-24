@@ -5,6 +5,7 @@ ktor:
   deployment:
     port: ${PORT}
   development: true
+
 jwt:
   domain: ${DOMAIN}
   issuer: "lilac-identity"
@@ -15,8 +16,10 @@ jwt:
   refreshTokenExpInDays: 30
   emailVerificationExpInMins: 10
   resetPasswordExpInMins: 10
-
   secret: ${JWT_SECRET}
+
+token:
+  secret: ${TOKEN_SECRET}
 
 postgres:
   url: ${DATABASE_URL}

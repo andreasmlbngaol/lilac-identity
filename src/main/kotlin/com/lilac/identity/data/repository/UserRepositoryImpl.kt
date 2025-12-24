@@ -41,7 +41,7 @@ class UserRepositoryImpl(): UserRepository {
             body(it)
         }
 
-    override fun findById(id: String): User? = transaction {
+    override suspend fun findById(id: String): User? = transaction {
         UsersTable
             .selectAll()
             .where { UsersTable.id eq id.toUUID() }
@@ -50,7 +50,7 @@ class UserRepositoryImpl(): UserRepository {
             ?.toDomain()
     }
 
-    override fun findByEmail(email: String): User? = transaction {
+    override suspend fun findByEmail(email: String): User? = transaction {
         UsersTable
             .selectAll()
             .where { UsersTable.email eq email }
@@ -59,7 +59,7 @@ class UserRepositoryImpl(): UserRepository {
             ?.toDomain()
     }
 
-    override fun findByEmailOrUsername(emailOrUsername: String): User? = transaction {
+    override suspend fun findByEmailOrUsername(emailOrUsername: String): User? = transaction {
         UsersTable
             .selectAll()
             .where { UsersTable.email eq emailOrUsername }
@@ -69,21 +69,28 @@ class UserRepositoryImpl(): UserRepository {
             ?.toDomain()
     }
 
-    override fun existsByEmail(email: String): Boolean = transaction {
+    override suspend fun existsById(id: String): Boolean = transaction {
+        UsersTable
+            .select(UsersTable.id)
+            .where { UsersTable.id eq id.toUUID() }
+            .count() > 0
+    }
+
+    override suspend fun existsByEmail(email: String): Boolean = transaction {
         UsersTable
             .select(UsersTable.id)
             .where { UsersTable.email eq email }
             .count() > 0
     }
 
-    override fun existsByUsername(username: String): Boolean = transaction {
+    override suspend fun existsByUsername(username: String): Boolean = transaction {
         UsersTable
             .select(UsersTable.id)
             .where { UsersTable.username eq username }
             .count() > 0
     }
 
-    override fun create(
+    override suspend fun create(
         email: String,
         username: String,
         passwordHash: String,
@@ -111,21 +118,21 @@ class UserRepositoryImpl(): UserRepository {
         }
     }
 
-    override fun deleteById(id: String): Boolean = transaction {
+    override suspend fun deleteById(id: String): Boolean = transaction {
         UsersTable
             .deleteWhere {
                 UsersTable.id eq id.toUUID()
             } > 0
     }
 
-    override fun updatePassword(id: String, newHash: String): Boolean = transaction {
+    override suspend fun updatePassword(id: String, newHash: String): Boolean = transaction {
         UsersTable
             .updateTimestamp({ UsersTable.id eq id.toUUID() }) {
                 it[UsersTable.passwordHash] = newHash
             } > 0
     }
 
-    override fun markEmailVerified(id: String): Boolean = transaction {
+    override suspend fun markEmailVerified(id: String): Boolean = transaction {
         UsersTable
             .updateTimestamp({ UsersTable.id eq id.toUUID() }) {
                 it[UsersTable.isEmailVerified] = true

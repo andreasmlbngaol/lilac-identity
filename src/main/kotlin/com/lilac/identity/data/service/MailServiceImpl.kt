@@ -14,7 +14,7 @@ import java.util.Properties
 class MailServiceImpl(
     private val config: MailConfig
 ): MailService {
-    override fun send(to: String, subject: String, html: String) {
+    override suspend fun send(to: String, subject: String, html: String) {
         val props = Properties().apply {
             put("mail.smtp.auth", "true")
             put("mail.smtp.starttls.enable", "true")

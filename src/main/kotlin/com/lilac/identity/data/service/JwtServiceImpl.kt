@@ -15,7 +15,14 @@ class JwtServiceImpl(
     private val TYPE_EMAIL_VERIFICATION = "email_verification"
     private val TYPE_PASSWORD_RESET = "password_reset"
 
-    override val domain = config.domain
+    override val domain
+        get() = config.domain
+
+    override val emailVerificationExpInMin: Long
+        get() = config.emailVerificationExpInMillis / 1000 / 60
+
+    override val passwordResetExpInMin: Long
+        get() = config.resetPasswordExpInMillis / 1000 / 60
 
     override fun generateAccessToken(
         userId: String,
@@ -45,22 +52,22 @@ class JwtServiceImpl(
         .withExpiresAt(Date(System.currentTimeMillis() + config.refreshTokenExpInMillis))
         .sign(config.algorithm)
 
-    override fun generateEmailVerificationToken(userId: String): String = JWT.create()
+    override fun generateEmailVerificationToken(userId: String, issuedAt: Long, expiresAt: Long): String = JWT.create()
         .withIssuer(config.issuer)
         .withAudience(config.audience)
         .withSubject(userId)
         .withClaim("type", TYPE_EMAIL_VERIFICATION)
-        .withIssuedAt(Date(System.currentTimeMillis()))
-        .withExpiresAt(Date(System.currentTimeMillis() + config.emailVerificationExpInMillis))
+        .withIssuedAt(Date(issuedAt))
+        .withExpiresAt(Date(expiresAt))
         .sign(config.algorithm)
 
-    override fun generatePasswordResetToken(userId: String): String = JWT.create()
+    override fun generatePasswordResetToken(userId: String, issuedAt: Long, expiresAt: Long): String = JWT.create()
         .withIssuer(config.issuer)
         .withAudience(config.audience)
         .withSubject(userId)
         .withClaim("type", TYPE_PASSWORD_RESET)
-        .withIssuedAt(Date(System.currentTimeMillis()))
-        .withExpiresAt(Date(System.currentTimeMillis() + config.resetPasswordExpInMillis))
+        .withIssuedAt(Date(issuedAt))
+        .withExpiresAt(Date(expiresAt))
         .sign(config.algorithm)
 
     private val verifier = JWT.require(config.algorithm)

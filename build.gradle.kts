@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.server.netty)
     implementation(libs.server.openapi)
     implementation(libs.server.swagger)
+    implementation(libs.server.html.builder)
     implementation(libs.serialization.json)
     implementation(libs.khealth)
     implementation(libs.logback)

@@ -8,6 +8,7 @@ import com.lilac.identity.config.configureResponse
 import com.lilac.identity.config.configureRouting
 import com.lilac.identity.config.configureSecurity
 import com.lilac.identity.config.configureSerialization
+import com.lilac.identity.config.startTokenCleanupJob
 import com.lilac.identity.db.DatabaseFactory.configureDatabase
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
@@ -19,6 +20,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureDatabase()
     configureKoin()
+    startTokenCleanupJob()
     configureLogging()
     configureSerialization()
     configureResponse()

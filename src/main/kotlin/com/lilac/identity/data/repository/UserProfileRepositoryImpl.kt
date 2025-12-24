@@ -36,7 +36,7 @@ class UserProfileRepositoryImpl(): UserProfileRepository {
             body(it)
         }
 
-    override fun findByUserId(userId: String): UserProfile? = transaction {
+    override suspend fun findByUserId(userId: String): UserProfile? = transaction {
         UserProfilesTable
             .selectAll()
             .where { UserProfilesTable.userId eq userId.toUUID() }
@@ -45,7 +45,7 @@ class UserProfileRepositoryImpl(): UserProfileRepository {
             ?.toDomain()
     }
 
-    override fun create(
+    override suspend fun create(
         userId: String,
         bio: String?,
         profilePictureUrl: String?,
@@ -70,7 +70,7 @@ class UserProfileRepositoryImpl(): UserProfileRepository {
         }
     }
 
-    override fun update(profile: UserProfile): Boolean = transaction {
+    override suspend fun update(profile: UserProfile): Boolean = transaction {
         UserProfilesTable
             .updateTimestamp({ UserProfilesTable.userId eq profile.userId.toUUID() }) {
                 it[bio] = profile.bio

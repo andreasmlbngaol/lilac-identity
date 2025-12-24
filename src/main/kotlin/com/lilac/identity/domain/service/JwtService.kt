@@ -4,6 +4,9 @@ import com.auth0.jwt.interfaces.DecodedJWT
 
 interface JwtService {
     val domain: String
+    val emailVerificationExpInMin: Long
+    val passwordResetExpInMin: Long
+
     fun generateAccessToken(
         userId: String,
         username: String,
@@ -17,11 +20,15 @@ interface JwtService {
     ): String
 
     fun generateEmailVerificationToken(
-        userId: String
+        userId: String,
+        issuedAt: Long,
+        expiresAt: Long
     ): String
 
     fun generatePasswordResetToken(
-        userId: String
+        userId: String,
+        issuedAt: Long,
+        expiresAt: Long
     ): String
 
     fun decodeEmailVerificationToken(
