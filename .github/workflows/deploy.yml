@@ -22,4 +22,5 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd ~/lilac/identity
+            sudo chmod +x ./deploy
             ./deploy
