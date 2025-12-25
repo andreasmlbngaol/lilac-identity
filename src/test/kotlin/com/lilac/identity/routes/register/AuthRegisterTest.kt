@@ -24,7 +24,7 @@ class AuthRegisterTest {
         val response = client.post("/api/auth/register") {
             setBody(
                 RegisterRequest(
-                    email = "lgandre45@gmail.com ", // sengaja messy
+                    email = "lgandre45@gmail.com ", // messy on purpose
                     username = " andreasmlbngaol ",
                     password = " Test1234 ",
                     firstName = " Andreas ",

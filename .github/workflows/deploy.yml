@@ -7,8 +7,13 @@ on:
     paths-ignore:
       - README.md
       - docs/**
-      - .github/**
       - "**/*.example"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.json"
+      - "**/*.lock"
+      - "**/**.run.xml"
+      - src/test/**
     workflow_dispatch:
 
 jobs:
