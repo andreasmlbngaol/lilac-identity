@@ -3,6 +3,7 @@ kotlin = "2.2.20"
 ktor = "3.3.3"
 exposed = "1.0.0-rc-3"
 postgresql = "42.7.8"
+h2 = "2.4.240"
 koin = "4.1.1"
 logback = "1.5.23"
 khealth = "3.0.2"
@@ -47,6 +48,7 @@ client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+h2 = { module = "com.h2database:h2", version.ref = "h2" }
 
 [plugins]
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }

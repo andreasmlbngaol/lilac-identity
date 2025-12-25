@@ -4,6 +4,7 @@ import com.lilac.identity.domain.model.ValidationResult
 import com.lilac.identity.domain.usecase.AuthUseCase
 import com.lilac.identity.domain.validator.RegisterValidator
 import com.lilac.identity.presentation.mapper.toDto
+import com.lilac.identity.presentation.request.LoginRequest
 import com.lilac.identity.presentation.request.RegisterRequest
 import com.lilac.identity.presentation.response.TokenPairResponse
 import com.lilac.identity.util.respondError
@@ -45,7 +46,7 @@ fun Route.authRoutes() {
                     }
                 )
 
-            val tokenPair = authUseCase.registerUser(
+            val tokenPair = authUseCase.register(
                 email = payload.email,
                 username = payload.username,
                 password = payload.password,
@@ -58,6 +59,32 @@ fun Route.authRoutes() {
                 TokenPairResponse(
                     data = tokenPair.toDto(),
                     message = "User created successfully"
+                )
+            )
+        }
+
+        post("/login") {
+            val unfilteredPayload = call.receive<LoginRequest>()
+            val payload = unfilteredPayload.copy(
+                identifier = unfilteredPayload.identifier.lowercase().trim(),
+                password = unfilteredPayload.password.trim()
+            )
+            if(payload.identifier.isBlank() || payload.password.isBlank()) {
+                return@post call.respondError(
+                    HttpStatusCode.BadRequest,
+                    "Email or username and password are required"
+                )
+            }
+
+            val tokenPair = authUseCase.login(
+                emailOrUsername = payload.identifier,
+                password = payload.password
+            )
+            call.respond(
+                HttpStatusCode.OK,
+                TokenPairResponse(
+                    data = tokenPair.toDto(),
+                    message = "Login successful"
                 )
             )
         }

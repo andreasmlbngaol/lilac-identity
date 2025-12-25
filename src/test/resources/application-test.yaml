@@ -1,0 +1,29 @@
+ktor:
+  deployment:
+    port: 0
+  development: false
+
+jwt:
+  domain: test.local
+  issuer: lilac-identity-test
+  audience: lilac-identity-test
+  realm: Lilac Identity Test
+  algorithm: HS256
+
+  accessTokenExpInMins: 5
+  refreshTokenExpInDays: 1
+  emailVerificationExpInMins: 5
+  resetPasswordExpInMins: 5
+
+  # secret harus ada walaupun dummy
+  secret: test0jwt0secret01234567890
+
+token:
+  secret: test0token0secret0abcdef
+
+mail:
+  host: localhost
+  port: 1025
+  username: test
+  password: test
+  from: test@local.dev

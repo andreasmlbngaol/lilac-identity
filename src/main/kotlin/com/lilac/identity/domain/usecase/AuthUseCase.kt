@@ -19,7 +19,7 @@ class AuthUseCase(
     private val passwordService: PasswordService,
     private val tokenService: TokenService
 ) {
-    suspend fun registerUser(
+    suspend fun register(
         email: String,
         username: String,
         password: String,
@@ -83,6 +83,17 @@ class AuthUseCase(
         return generateTokenPair(user)
     }
 
+    suspend fun login(emailOrUsername: String, password: String): TokenPair {
+        val user = userRepository.findByEmailOrUsername(emailOrUsername)
+            ?: throw InvalidIdentifierException()
+
+        passwordService.verify(password, user.passwordHash).let { verified ->
+            if (!verified) throw InvalidIdentifierException()
+        }
+
+        return generateTokenPair(user)
+    }
+
     suspend fun verifyEmail(token: String): Boolean {
         val decoded = jwtService.decodeEmailVerificationToken(token)
             ?: throw InvalidTokenException("Invalid Token")
@@ -102,17 +113,6 @@ class AuthUseCase(
         tokenRepository.markAsUsed(tokenEntity.id)
 
         return userRepository.markEmailVerified(userId)
-    }
-
-    suspend fun login(emailOrUsername: String, password: String): TokenPair {
-        val user = userRepository.findByEmailOrUsername(emailOrUsername)
-            ?: throw InvalidIdentifierException()
-
-        passwordService.verify(password, user.passwordHash).let { verified ->
-            if (!verified) throw InvalidIdentifierException()
-        }
-
-        return generateTokenPair(user)
     }
 
     suspend fun forgotPassword(emailOrUsername: String): Boolean {

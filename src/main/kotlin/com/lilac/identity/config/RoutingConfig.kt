@@ -15,10 +15,10 @@ import io.ktor.server.routing.routing
 fun Application.configureRouting() {
     routing {
         get("/") { call.respondRedirect("/api") }
-        openAPI(path="openapi", swaggerFile = "openapi/documentation.json")
-        swaggerUI(path="swagger", swaggerFile = "openapi/documentation.json")
-
         route("/api") {
+            openAPI(path="openapi", swaggerFile = "openapi/documentation.json")
+            swaggerUI(path="swagger", swaggerFile = "openapi/documentation.json")
+
             get {
                 call.respond(
                     HttpStatusCode.OK,
