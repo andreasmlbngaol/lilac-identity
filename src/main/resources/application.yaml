@@ -4,28 +4,25 @@ ktor:
       - com.lilac.identity.ApplicationKt.module
   deployment:
     port: ${PORT}
-  development: true
-
-jwt:
+  development: ${DEVELOPMENT}
   domain: ${DOMAIN}
-  issuer: "lilac-identity"
-  audience: "lilac-identity"
+
+auth:
   realm: "Lilac Identity"
-  algorithm: "HS256"
+  secret: ${AUTH_SECRET}
+  audience: "lilac-identity"
+  issuer: "lilac-identity"
   accessTokenExpInMins: 15
   refreshTokenExpInDays: 30
-  emailVerificationExpInMins: 10
-  resetPasswordExpInMins: 10
-  secret: ${JWT_SECRET}
 
-token:
-  secret: ${TOKEN_SECRET}
-
-postgres:
-  url: ${DATABASE_URL}
-  username: ${DATABASE_USER}
-  password: ${DATABASE_PASSWORD}
-  maximumPoolSize: 10
+verification:
+  realm: "Lilac Identity"
+  secret: ${VERIFICATION_SECRET}
+  audience: "lilac-identity"
+  issuer: "lilac-identity"
+  emailVerificationTokenExpInMins: 10
+  resetPasswordTokenExpInMins: 10
+  hashSecret: ${VERIFICATION_HASH_SECRET}
 
 mail:
   host: ${MAIL_HOST}
@@ -33,3 +30,9 @@ mail:
   username: ${MAIL_USERNAME}
   password: ${MAIL_PASSWORD} # Usually SMTP Key
   from: ${MAIL_FROM}
+
+postgres:
+  url: ${DATABASE_URL}
+  username: ${DATABASE_USER}
+  password: ${DATABASE_PASSWORD}
+  maximumPoolSize: 10

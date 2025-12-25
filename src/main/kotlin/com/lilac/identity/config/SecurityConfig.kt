@@ -1,7 +1,6 @@
 package com.lilac.identity.config
 
 import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
@@ -10,7 +9,7 @@ import io.ktor.server.auth.jwt.jwt
 import org.koin.ktor.ext.getKoin
 
 fun Application.configureSecurity() {
-    val jwt = getKoin().get<JwtConfig>()
+    val jwt = getKoin().get<AuthConfig>()
 
     install(Authentication) {
         jwt(AppConstant.JWT_NAME) {

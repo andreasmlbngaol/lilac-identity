@@ -1,22 +1,25 @@
 package com.lilac.identity.routes.register
 
-import com.lilac.identity.data.validator.RegisterValidatorImpl
 import com.lilac.identity.domain.model.ValidationResult
+import com.lilac.identity.presentation.request.RegisterRequest
+import com.lilac.identity.presentation.validator.RegisterValidator
 import junit.framework.TestCase.assertTrue
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
 class RegisterValidatorImplTest {
-    private val validator = RegisterValidatorImpl()
+    private val validator = RegisterValidator
 
     @Test
     fun `valid payload returns Valid`() {
         val result = validator.validate(
-            email = "john@example.com",
-            username = "johndoe",
-            password = "SecurePass123",
-            firstName = "John",
-            lastName = "Doe"
+            RegisterRequest(
+                email = "john@example.com",
+                username = "johndoe",
+                password = "SecurePass123",
+                firstName = "John",
+                lastName = "Doe"
+            )
         )
 
         assertTrue(result is ValidationResult.Valid)
@@ -25,11 +28,13 @@ class RegisterValidatorImplTest {
     @Test
     fun `invalid email returns error`() {
         val result = validator.validate(
-            email = "invalid-email",
-            username = "johndoe",
-            password = "SecurePass123",
-            firstName = "John",
-            lastName = "Doe"
+            RegisterRequest(
+                email = "invalid-email",
+                username = "johndoe",
+                password = "SecurePass123",
+                firstName = "John",
+                lastName = "Doe"
+            )
         ) as ValidationResult.Invalid
 
         assertEquals("Email format is invalid", result.errors["email"])
@@ -38,11 +43,13 @@ class RegisterValidatorImplTest {
     @Test
     fun `password without uppercase is rejected`() {
         val result = validator.validate(
-            email = "john@example.com",
-            username = "johndoe",
-            password = "securepass123",
-            firstName = "John",
-            lastName = "Doe"
+            RegisterRequest(
+                email = "john@example.com",
+                username = "johndoe",
+                password = "securepass123",
+                firstName = "John",
+                lastName = "Doe"
+            )
         ) as ValidationResult.Invalid
 
         assertEquals(
@@ -54,11 +61,13 @@ class RegisterValidatorImplTest {
     @Test
     fun `first name with number is rejected`() {
         val result = validator.validate(
-            email = "john@example.com",
-            username = "johndoe",
-            password = "SecurePass123",
-            firstName = "John1",
-            lastName = "Doe"
+            RegisterRequest(
+                email = "john@example.com",
+                username = "johndoe",
+                password = "SecurePass123",
+                firstName = "John1",
+                lastName = "Doe"
+            )
         ) as ValidationResult.Invalid
 
         assertEquals(

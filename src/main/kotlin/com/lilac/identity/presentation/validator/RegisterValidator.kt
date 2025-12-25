@@ -1,35 +1,27 @@
-package com.lilac.identity.data.validator
+package com.lilac.identity.presentation.validator
 
 import com.lilac.identity.domain.model.ValidationResult
-import com.lilac.identity.domain.validator.RegisterValidator
+import com.lilac.identity.presentation.request.RegisterRequest
 
-class RegisterValidatorImpl(): RegisterValidator {
-    private companion object {
-        const val MIN_USERNAME_LENGTH = 3
-        const val MAX_USERNAME_LENGTH = 32
-        const val MIN_PASSWORD_LENGTH = 8
-        const val MAX_PASSWORD_LENGTH = 100
-        const val MIN_NAME_LENGTH = 2
-        const val MAX_NAME_LENGTH = 30
+object RegisterValidator {
+    const val MIN_USERNAME_LENGTH = 3
+    const val MAX_USERNAME_LENGTH = 32
+    const val MIN_PASSWORD_LENGTH = 8
+    const val MAX_PASSWORD_LENGTH = 100
+    const val MIN_NAME_LENGTH = 2
+    const val MAX_NAME_LENGTH = 30
 
-        val EMAIL_REGEX = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
-        val USERNAME_REGEX = Regex("^[a-zA-Z0-9_-]+$")
-    }
+    val EMAIL_REGEX = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+    val USERNAME_REGEX = Regex("^[a-zA-Z0-9_-]+$")
 
-    override fun validate(
-        email: String,
-        username: String,
-        password: String,
-        firstName: String,
-        lastName: String
-    ): ValidationResult {
+    fun validate(request: RegisterRequest): ValidationResult {
         val errors = mutableMapOf<String, String>()
 
-        validateEmail(email)?.let { errors["email"] = it }
-        validateUsername(username)?.let { errors["username"] = it }
-        validatePassword(password)?.let { errors["password"] = it }
-        validateFirstName(firstName)?.let { errors["firstName"] = it }
-        validateLastName(lastName)?.let { errors["lastName"] = it }
+        validateEmail(request.email)?.let { errors["email"] = it }
+        validateUsername(request.username)?.let { errors["username"] = it }
+        validatePassword(request.password)?.let { errors["password"] = it }
+        validateFirstName(request.firstName)?.let { errors["firstName"] = it }
+        validateLastName(request.lastName)?.let { errors["lastName"] = it }
 
         return if (errors.isEmpty())
             ValidationResult.Valid

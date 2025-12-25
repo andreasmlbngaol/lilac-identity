@@ -11,7 +11,7 @@ import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
 import java.util.Properties
 
-class MailServiceImpl(
+class BrevoMailService(
     private val config: MailConfig
 ): MailService {
     override suspend fun send(to: String, subject: String, html: String) {

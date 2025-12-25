@@ -1,17 +1,19 @@
 package com.lilac.identity.data.repository
 
+import com.lilac.identity.config.AppConfig
 import com.lilac.identity.domain.repository.MailRepository
 import com.lilac.identity.domain.service.MailService
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 
 class MailRepositoryImpl(
-    private val mailService: MailService
+    private val mailService: MailService,
+    private val appConfig: AppConfig,
 ): MailRepository {
     override suspend fun sendEmailVerification(
         email: String,
         fullName: String,
-        link: String,
+        token: String,
         expiresInMin: Long
     ): Boolean {
         return try {
@@ -22,7 +24,7 @@ class MailRepositoryImpl(
                     p { +"Hi $fullName," }
                     p { +"Please verify your email by clicking the button below:" }
                     p {
-                        a(href = link) {
+                        a(href = "${appConfig.domain}/api/auth/verify-email?token=$token") {
                             style = "display:inline-block;padding:10px 20px;background-color:#8e44ad;color:white;text-decoration:none;border-radius:4px;"
                             +"Verify Email"
                         }

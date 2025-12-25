@@ -4,7 +4,7 @@ interface MailRepository {
     suspend fun sendEmailVerification(
         email: String,
         fullName: String,
-        link: String,
+        token: String,
         expiresInMin: Long
     ): Boolean
 
