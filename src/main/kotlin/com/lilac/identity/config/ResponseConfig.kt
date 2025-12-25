@@ -5,6 +5,7 @@ import com.lilac.identity.domain.model.CreateUserProfileException
 import com.lilac.identity.domain.model.EmailAlreadyUsedException
 import com.lilac.identity.domain.model.EmailVerificationNotSentException
 import com.lilac.identity.domain.model.InternalServerException
+import com.lilac.identity.domain.model.InvalidIdentifierException
 import com.lilac.identity.domain.model.InvalidTokenException
 import com.lilac.identity.domain.model.TokenNotProvidedException
 import com.lilac.identity.domain.model.UserNotFoundException
@@ -22,6 +23,13 @@ import kotlinx.html.*
 
 fun Application.configureResponse() {
     install(StatusPages) {
+        exception<InvalidIdentifierException> { call, cause ->
+            call.respondError(
+                HttpStatusCode.Unauthorized,
+                cause.message
+            )
+        }
+
         exception<InvalidTokenException> { call, _ ->
             call.respondHtml {
                 head {

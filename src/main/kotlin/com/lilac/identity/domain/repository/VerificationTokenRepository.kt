@@ -1,23 +1,23 @@
 package com.lilac.identity.domain.repository
 
-import com.lilac.identity.domain.model.Token
-import com.lilac.identity.domain.enum.TokenType
+import com.lilac.identity.domain.model.VerificationToken
+import com.lilac.identity.domain.enum.VerificationTokenType
 
-interface TokenRepository {
+interface VerificationTokenRepository {
     suspend fun create(
         userId: String,
         tokenHash: String,
-        tokenType: TokenType,
+        verificationTokenType: VerificationTokenType,
         issuedAt: Long,
         expiresAt: Long
     ): String
 
     suspend fun findActiveByUserIdAndType(
         userId: String,
-        tokenType: TokenType
-    ): Token?
+        verificationTokenType: VerificationTokenType
+    ): VerificationToken?
 
-    suspend fun findByTokenHash(tokenHah: String): Token?
+    suspend fun findByTokenHash(tokenHah: String): VerificationToken?
 
     suspend fun markAsUsed(
         tokenId: String
@@ -25,7 +25,7 @@ interface TokenRepository {
 
     suspend fun deleteByUserIdAndType(
         userId: String,
-        tokenType: TokenType
+        verificationTokenType: VerificationTokenType
     ): Boolean
 
     suspend fun deleteExpiredTokens(): Int

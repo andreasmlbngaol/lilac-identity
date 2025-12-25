@@ -1,11 +1,11 @@
 package com.lilac.identity.domain.usecase
 
-import com.lilac.identity.domain.repository.TokenRepository
+import com.lilac.identity.domain.repository.VerificationTokenRepository
 
 class TokenCleanupUseCase(
-    private val tokenRepository: TokenRepository
+    private val verificationTokenRepository: VerificationTokenRepository
 ) {
     suspend fun cleanupExpiredToken(): Int {
-        return tokenRepository.deleteExpiredTokens()
+        return verificationTokenRepository.deleteExpiredTokens()
     }
 }

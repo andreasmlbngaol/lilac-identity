@@ -1,11 +1,11 @@
 package com.lilac.identity.di
 
 import com.lilac.identity.data.repository.MailRepositoryImpl
-import com.lilac.identity.data.repository.TokenRepositoryImpl
+import com.lilac.identity.data.repository.VerificationTokenRepositoryImpl
 import com.lilac.identity.data.repository.UserProfileRepositoryImpl
 import com.lilac.identity.data.repository.UserRepositoryImpl
 import com.lilac.identity.domain.repository.MailRepository
-import com.lilac.identity.domain.repository.TokenRepository
+import com.lilac.identity.domain.repository.VerificationTokenRepository
 import com.lilac.identity.domain.repository.UserProfileRepository
 import com.lilac.identity.domain.repository.UserRepository
 import org.koin.core.module.dsl.singleOf
@@ -16,5 +16,5 @@ val repositoryModule = module {
     singleOf(::UserRepositoryImpl).bind<UserRepository>()
     singleOf(::UserProfileRepositoryImpl).bind<UserProfileRepository>()
     singleOf(::MailRepositoryImpl).bind<MailRepository>()
-    singleOf(::TokenRepositoryImpl).bind<TokenRepository>()
+    singleOf(::VerificationTokenRepositoryImpl).bind<VerificationTokenRepository>()
 }

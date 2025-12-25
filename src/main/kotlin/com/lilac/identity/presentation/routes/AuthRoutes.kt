@@ -21,6 +21,7 @@ fun Route.authRoutes() {
     val registerValidator by inject<RegisterValidator>()
 
     route("/auth") {
+        // Tested
         post("/register") {
             val unfilteredPayload = call.receive<RegisterRequest>()
             val payload = unfilteredPayload.copy(
@@ -63,6 +64,7 @@ fun Route.authRoutes() {
             )
         }
 
+        // Tested
         post("/login") {
             val unfilteredPayload = call.receive<LoginRequest>()
             val payload = unfilteredPayload.copy(

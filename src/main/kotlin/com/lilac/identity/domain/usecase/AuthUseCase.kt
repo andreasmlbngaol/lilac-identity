@@ -1,23 +1,23 @@
 package com.lilac.identity.domain.usecase
 
-import com.lilac.identity.domain.enum.TokenType
+import com.lilac.identity.domain.enum.VerificationTokenType
 import com.lilac.identity.domain.model.*
 import com.lilac.identity.domain.repository.MailRepository
-import com.lilac.identity.domain.repository.TokenRepository
+import com.lilac.identity.domain.repository.VerificationTokenRepository
 import com.lilac.identity.domain.repository.UserProfileRepository
 import com.lilac.identity.domain.repository.UserRepository
-import com.lilac.identity.domain.service.JwtService
+import com.lilac.identity.domain.service.AuthTokenService
 import com.lilac.identity.domain.service.PasswordService
-import com.lilac.identity.domain.service.TokenService
+import com.lilac.identity.domain.service.VerificationTokenService
 
 class AuthUseCase(
     private val userRepository: UserRepository,
     private val userProfileRepository: UserProfileRepository,
-    private val tokenRepository: TokenRepository,
+    private val verificationTokenRepository: VerificationTokenRepository,
     private val mailRepository: MailRepository,
-    private val jwtService: JwtService,
+    private val authTokenService: AuthTokenService,
     private val passwordService: PasswordService,
-    private val tokenService: TokenService
+    private val verificationTokenService: VerificationTokenService
 ) {
     suspend fun register(
         email: String,
@@ -50,18 +50,18 @@ class AuthUseCase(
         )
 
         val issuedAt = System.currentTimeMillis()
-        val expiresAt = jwtService.emailVerificationExpInMin * 60 * 1000 + issuedAt
-        val token = jwtService.generateEmailVerificationToken(
+        val expiresAt = authTokenService.emailVerificationExpInMin * 60 * 1000 + issuedAt
+        val token = authTokenService.generateEmailVerificationToken(
             userId = userId,
             issuedAt = issuedAt,
             expiresAt = expiresAt
         )
 
-        val tokenHash = tokenService.hash(token)
-        tokenRepository.create(
+        val tokenHash = verificationTokenService.hash(token)
+        verificationTokenRepository.create(
             userId,
             tokenHash = tokenHash,
-            tokenType = TokenType.EmailVerification,
+            verificationTokenType = VerificationTokenType.EmailVerification,
             issuedAt = issuedAt,
             expiresAt = expiresAt
         )
@@ -69,8 +69,8 @@ class AuthUseCase(
         val emailSent = mailRepository.sendEmailVerification(
             email = email,
             fullName = "$firstName $lastName",
-            link = "${jwtService.domain}/api/auth/verify-email?token=$token",
-            expiresInMin = jwtService.emailVerificationExpInMin
+            link = "${authTokenService.domain}/api/auth/verify-email?token=$token",
+            expiresInMin = authTokenService.emailVerificationExpInMin
         )
 
         if (!emailSent) {
@@ -95,12 +95,12 @@ class AuthUseCase(
     }
 
     suspend fun verifyEmail(token: String): Boolean {
-        val decoded = jwtService.decodeEmailVerificationToken(token)
+        val decoded = authTokenService.decodeEmailVerificationToken(token)
             ?: throw InvalidTokenException("Invalid Token")
         val userId = decoded.subject
 
-        val tokenHash = tokenService.hash(token)
-        val tokenEntity = tokenRepository.findByTokenHash(tokenHash)
+        val tokenHash = verificationTokenService.hash(token)
+        val tokenEntity = verificationTokenRepository.findByTokenHash(tokenHash)
             ?: throw InvalidTokenException("Token not found")
 
         if (tokenEntity.isUsed) {
@@ -110,7 +110,7 @@ class AuthUseCase(
         val exists = userRepository.existsById(userId)
         if(!exists) throw InvalidTokenException("User not found")
 
-        tokenRepository.markAsUsed(tokenEntity.id)
+        verificationTokenRepository.markAsUsed(tokenEntity.id)
 
         return userRepository.markEmailVerified(userId)
     }
@@ -120,8 +120,8 @@ class AuthUseCase(
             ?: throw UserNotFoundException()
 
         val issuedAt = System.currentTimeMillis()
-        val expiresAt = jwtService.passwordResetExpInMin * 60 * 1000 + issuedAt
-        val token = jwtService.generatePasswordResetToken(
+        val expiresAt = authTokenService.passwordResetExpInMin * 60 * 1000 + issuedAt
+        val token = authTokenService.generatePasswordResetToken(
             userId = user.id,
             issuedAt = issuedAt,
             expiresAt = expiresAt
@@ -130,20 +130,20 @@ class AuthUseCase(
         return mailRepository.sendPasswordResetEmail(
             email = user.email,
             fullName = "${user.firstName} ${user.lastName}",
-            link = "${jwtService.domain}/api/auth/reset-password?token=$token",
-            expiresInMin = jwtService.passwordResetExpInMin
+            link = "${authTokenService.domain}/api/auth/reset-password?token=$token",
+            expiresInMin = authTokenService.passwordResetExpInMin
         )
     }
 
     suspend fun resetPassword(token: String, newPassword: String): Boolean {
-        val decoded = jwtService.decodePasswordResetToken(token) ?: throw InvalidTokenException()
+        val decoded = authTokenService.decodePasswordResetToken(token) ?: throw InvalidTokenException()
         val userId = decoded.subject
         val hash = passwordService.hash(newPassword)
         return userRepository.updatePassword(userId, hash)
     }
 
     private fun generateTokenPair(user: User): TokenPair {
-        val accessToken = jwtService.generateAccessToken(
+        val accessToken = authTokenService.generateAccessToken(
             userId = user.id,
             username = user.username,
             firstName = user.firstName,
@@ -151,7 +151,7 @@ class AuthUseCase(
             isEmailVerified = user.isEmailVerified
         )
 
-        val refreshToken = jwtService.generateRefreshToken(user.id)
+        val refreshToken = authTokenService.generateRefreshToken(user.id)
 
         return TokenPair(accessToken, refreshToken)
     }

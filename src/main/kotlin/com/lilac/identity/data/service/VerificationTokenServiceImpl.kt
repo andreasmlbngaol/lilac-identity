@@ -1,13 +1,13 @@
 package com.lilac.identity.data.service
 
 import com.lilac.identity.config.TokenConfig
-import com.lilac.identity.domain.service.TokenService
+import com.lilac.identity.domain.service.VerificationTokenService
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-class TokenServiceImpl(
+class VerificationTokenServiceImpl(
     private val config: TokenConfig
-): TokenService {
+): VerificationTokenService {
     override fun hash(token: String): String {
         return hmacSha256(token)
     }

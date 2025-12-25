@@ -1,6 +1,6 @@
 package com.lilac.identity.domain.enum
 
-enum class TokenType {
+enum class VerificationTokenType {
     EmailVerification,
     PasswordReset
 }

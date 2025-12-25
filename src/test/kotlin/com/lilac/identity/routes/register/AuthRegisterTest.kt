@@ -2,14 +2,15 @@ package com.lilac.identity.routes.register
 
 import com.lilac.identity.config.cleanupTestDatabase
 import com.lilac.identity.presentation.request.RegisterRequest
+import com.lilac.identity.presentation.response.TokenPairResponse
 import com.lilac.identity.testApp
+import io.ktor.client.call.body
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
-import junit.framework.TestCase
 import org.junit.After
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class AuthRegisterTest {
 
@@ -34,9 +35,9 @@ class AuthRegisterTest {
 
         assertEquals(HttpStatusCode.Created, response.status)
 
-        val body = response.bodyAsText()
-        TestCase.assertTrue(body.contains("access_token"))
-        TestCase.assertTrue(body.contains("refresh_token"))
+        val body = response.body<TokenPairResponse>()
+        assertTrue(body.data.accessToken.isNotBlank())
+        assertTrue(body.data.refreshToken.isNotBlank())
     }
 
     @Test

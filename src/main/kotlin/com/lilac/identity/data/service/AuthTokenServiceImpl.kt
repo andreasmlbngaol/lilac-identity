@@ -4,12 +4,12 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.lilac.identity.config.JwtConfig
-import com.lilac.identity.domain.service.JwtService
+import com.lilac.identity.domain.service.AuthTokenService
 import java.util.Date
 
-class JwtServiceImpl(
+class AuthTokenServiceImpl(
     private val config: JwtConfig
-): JwtService {
+): AuthTokenService {
     private val TYPE_ACCESS = "access"
     private val TYPE_REFRESH = "refresh"
     private val TYPE_EMAIL_VERIFICATION = "email_verification"

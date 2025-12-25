@@ -2,7 +2,7 @@ package com.lilac.identity.domain.service
 
 import com.auth0.jwt.interfaces.DecodedJWT
 
-interface JwtService {
+interface AuthTokenService {
     val domain: String
     val emailVerificationExpInMin: Long
     val passwordResetExpInMin: Long

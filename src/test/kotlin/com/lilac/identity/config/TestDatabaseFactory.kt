@@ -1,6 +1,6 @@
 package com.lilac.identity.config
 
-import com.lilac.identity.db.tables.TokensTable
+import com.lilac.identity.db.tables.VerificationTokensTable
 import com.lilac.identity.db.tables.UserProfilesTable
 import com.lilac.identity.db.tables.UsersTable
 import com.zaxxer.hikari.HikariConfig
@@ -30,13 +30,13 @@ object TestDatabaseFactory {
         SchemaUtils.create(
             UsersTable,
             UserProfilesTable,
-            TokensTable
+            VerificationTokensTable
         )
     }
 
     fun clearTestDatabase() = transaction {
         SchemaUtils.drop(
-            TokensTable,
+            VerificationTokensTable,
             UserProfilesTable,
             UsersTable
         )

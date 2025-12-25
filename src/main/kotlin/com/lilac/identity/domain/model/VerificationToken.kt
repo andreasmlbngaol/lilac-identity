@@ -1,12 +1,12 @@
 package com.lilac.identity.domain.model
 
-import com.lilac.identity.domain.enum.TokenType
+import com.lilac.identity.domain.enum.VerificationTokenType
 
-data class Token(
+data class VerificationToken(
     val id: String,
     val userId: String,
     val tokenHashed: String,
-    val tokenType: TokenType,
+    val verificationTokenType: VerificationTokenType,
     val isUsed: Boolean = false,
     val usedAt: Long? = null,
     val issuedAt: Long,
