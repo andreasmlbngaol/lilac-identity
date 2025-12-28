@@ -11,7 +11,6 @@ import java.util.Base64
 
 data class AuthConfig(
     val issuer: String,
-    val audience: String,
     val realm: String,
     private val privateKeyPath: String,
     private val accessTokenExpInMins: Long,
@@ -31,7 +30,6 @@ fun Application.loadAuthConfig(): AuthConfig {
     return AuthConfig(
         realm = cfg.propertyOrNull("auth.realm")?.getString() ?: error("JWT Realm must be specified"),
         privateKeyPath = cfg.propertyOrNull("auth.privateKeyPath")?.getString() ?: error("JWT Private Key Path must be specified"),
-        audience = cfg.propertyOrNull("auth.audience")?.getString() ?: error("JWT Audience must be specified"),
         issuer = cfg.propertyOrNull("auth.issuer")?.getString() ?: error("JWT Issuer must be specified"),
         accessTokenExpInMins = cfg.propertyOrNull("auth.accessTokenExpInMins")?.getString()?.toLong() ?: 10,
         refreshTokenExpInDays = cfg.propertyOrNull("auth.refreshTokenExpInDays")?.getString()?.toLong() ?: 30,

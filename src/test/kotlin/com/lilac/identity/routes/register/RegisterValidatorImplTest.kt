@@ -18,7 +18,8 @@ class RegisterValidatorImplTest {
                 username = "johndoe",
                 password = "SecurePass123",
                 firstName = "John",
-                lastName = "Doe"
+                lastName = "Doe",
+                audience = "test-audience"
             )
         )
 
@@ -33,7 +34,8 @@ class RegisterValidatorImplTest {
                 username = "johndoe",
                 password = "SecurePass123",
                 firstName = "John",
-                lastName = "Doe"
+                lastName = "Doe",
+                audience = "test-audience"
             )
         ) as ValidationResult.Invalid
 
@@ -48,7 +50,8 @@ class RegisterValidatorImplTest {
                 username = "johndoe",
                 password = "securepass123",
                 firstName = "John",
-                lastName = "Doe"
+                lastName = "Doe",
+                audience = "test-audience"
             )
         ) as ValidationResult.Invalid
 
@@ -66,7 +69,8 @@ class RegisterValidatorImplTest {
                 username = "johndoe",
                 password = "SecurePass123",
                 firstName = "John1",
-                lastName = "Doe"
+                lastName = "Doe",
+                audience = "test-audience"
             )
         ) as ValidationResult.Invalid
 

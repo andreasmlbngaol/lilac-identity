@@ -17,7 +17,6 @@ fun Application.configureSecurity() {
             verifier(
                 JWT
                     .require(jwt.algorithm)
-                    .withAudience(jwt.audience)
                     .withIssuer(jwt.issuer)
                     .build()
             )
@@ -25,10 +24,10 @@ fun Application.configureSecurity() {
             validate { credential ->
                 val payload = credential.payload
 
-                payload.subject ?: return@validate null
+                payload.subject?.takeIf { it.isNotBlank() } ?: return@validate null
                 val type = payload.getClaim("type").asString()
 
-                if (type != "access") return@validate null
+                if (type != "Access") return@validate null
 
                 JWTPrincipal(payload)
             }

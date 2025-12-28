@@ -28,7 +28,8 @@ class AuthUseCase(
         username: String,
         password: String,
         firstName: String,
-        lastName: String
+        lastName: String,
+        audience: String
     ): TokenPair {
         val emailUsed = userRepository.existsByEmail(email)
         if (emailUsed) throw EmailAlreadyUsedException()
@@ -79,10 +80,17 @@ class AuthUseCase(
 
         val user = userRepository.findById(userId) ?: throw UserNotFoundException()
 
-        return generateTokenPair(user)
+        return generateTokenPair(
+            user = user,
+            audience = audience
+        )
     }
 
-    suspend fun login(emailOrUsername: String, password: String): TokenPair {
+    suspend fun login(
+        emailOrUsername: String,
+        password: String,
+        audience: String
+    ): TokenPair {
         val user = userRepository.findByEmailOrUsername(emailOrUsername)
             ?: throw InvalidIdentifierException()
 
@@ -90,7 +98,10 @@ class AuthUseCase(
             if (!verified) throw InvalidIdentifierException()
         }
 
-        return generateTokenPair(user)
+        return generateTokenPair(
+            user = user,
+            audience = audience
+        )
     }
 
     suspend fun verifyEmail(token: String): Boolean {
@@ -114,16 +125,23 @@ class AuthUseCase(
         return userRepository.markEmailVerified(userId)
     }
 
-    private fun generateTokenPair(user: User): TokenPair {
+    private fun generateTokenPair(
+        user: User,
+        audience: String
+    ): TokenPair {
         val accessToken = authTokenGenerator.generateAccessToken(
             userId = user.id,
             username = user.username,
             firstName = user.firstName,
             lastName = user.lastName,
-            isEmailVerified = user.isEmailVerified
+            isEmailVerified = user.isEmailVerified,
+            audience = audience
         )
 
-        val refreshToken = authTokenGenerator.generateRefreshToken(user.id)
+        val refreshToken = authTokenGenerator.generateRefreshToken(
+            userId = user.id,
+            audience = audience
+        )
 
         return TokenPair(accessToken.token, refreshToken.token)
     }

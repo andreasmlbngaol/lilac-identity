@@ -46,7 +46,8 @@ fun Route.authRoutes() {
                 username = payload.username,
                 password = payload.password,
                 firstName = payload.firstName,
-                lastName = payload.lastName
+                lastName = payload.lastName,
+                audience = payload.audience
             )
 
             call.respond(
@@ -74,7 +75,8 @@ fun Route.authRoutes() {
 
             val tokenPair = authUseCase.login(
                 emailOrUsername = payload.identifier,
-                password = payload.password
+                password = payload.password,
+                audience = payload.audience
             )
             call.respond(
                 HttpStatusCode.OK,

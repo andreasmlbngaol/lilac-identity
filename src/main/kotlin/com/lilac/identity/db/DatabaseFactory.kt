@@ -34,7 +34,7 @@ object DatabaseFactory {
         createTables()
     }
 
-    fun createTables() = transaction {
+    private fun createTables() = transaction {
         SchemaUtils.create(
             UsersTable,
             UserProfilesTable,

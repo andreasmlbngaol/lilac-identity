@@ -8,10 +8,12 @@ interface AuthTokenGenerator {
         username: String,
         firstName: String,
         lastName: String,
-        isEmailVerified: Boolean
+        isEmailVerified: Boolean,
+        audience: String
     ): AuthTokenResult
 
     fun generateRefreshToken(
-        userId: String
+        userId: String,
+        audience: String
     ): AuthTokenResult
 }

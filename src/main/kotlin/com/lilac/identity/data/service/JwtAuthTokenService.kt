@@ -18,14 +18,15 @@ class JwtAuthTokenService(
         username: String,
         firstName: String,
         lastName: String,
-        isEmailVerified: Boolean
+        isEmailVerified: Boolean,
+        audience: String
     ): AuthTokenResult {
         val issuedAt = System.currentTimeMillis()
         val expiresAt = issuedAt + config.accessTokenExpInMillis
 
         val token = JWT.create()
             .withIssuer(config.issuer)
-            .withAudience(config.audience)
+            .withAudience(audience)
             .withSubject(userId)
             .withClaim("username", username)
             .withClaim("first_name", firstName)
@@ -44,13 +45,16 @@ class JwtAuthTokenService(
         )
     }
 
-    override fun generateRefreshToken(userId: String): AuthTokenResult {
+    override fun generateRefreshToken(
+        userId: String,
+        audience: String
+    ): AuthTokenResult {
         val issuedAt = System.currentTimeMillis()
         val expiresAt = issuedAt + config.refreshTokenExpInMillis
 
         val token = JWT.create()
             .withIssuer(config.issuer)
-            .withAudience(config.audience)
+            .withAudience(audience)
             .withSubject(userId)
             .withClaim("type", AuthTokenType.Refresh.name)
             .withIssuedAt(Date(issuedAt))
@@ -66,7 +70,6 @@ class JwtAuthTokenService(
     }
 
     private val verifier = JWT.require(config.algorithm)
-        .withAudience(config.audience)
         .withIssuer(config.issuer)
         .build()
 
