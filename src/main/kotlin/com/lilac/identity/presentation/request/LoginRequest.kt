@@ -6,5 +6,4 @@ import kotlinx.serialization.Serializable
 data class LoginRequest(
     val identifier: String,
     val password: String,
-    val audience: String
 )

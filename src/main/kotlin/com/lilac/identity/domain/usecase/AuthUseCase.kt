@@ -2,6 +2,7 @@ package com.lilac.identity.domain.usecase
 
 import com.lilac.identity.domain.enum.VerificationTokenType
 import com.lilac.identity.domain.model.*
+import com.lilac.identity.domain.repository.ClientRepository
 import com.lilac.identity.domain.repository.MailRepository
 import com.lilac.identity.domain.repository.UserProfileRepository
 import com.lilac.identity.domain.repository.UserRepository
@@ -16,6 +17,7 @@ class AuthUseCase(
     private val userRepository: UserRepository,
     private val userProfileRepository: UserProfileRepository,
     private val verificationTokenRepository: VerificationTokenRepository,
+    private val clientRepository: ClientRepository,
     private val mailRepository: MailRepository,
     private val authTokenGenerator: AuthTokenGenerator,
     private val verificationTokenGenerator: VerificationTokenGenerator,
@@ -29,8 +31,11 @@ class AuthUseCase(
         password: String,
         firstName: String,
         lastName: String,
-        audience: String
+        clientId: String
     ): TokenPair {
+        val audience = clientRepository.findAudienceByClientId(clientId)
+            ?: throw InvalidIdentifierException("Invalid Client ID")
+
         val emailUsed = userRepository.existsByEmail(email)
         if (emailUsed) throw EmailAlreadyUsedException()
 
@@ -89,8 +94,11 @@ class AuthUseCase(
     suspend fun login(
         emailOrUsername: String,
         password: String,
-        audience: String
+        clientId: String
     ): TokenPair {
+        val audience = clientRepository.findAudienceByClientId(clientId)
+            ?: throw InvalidIdentifierException("Invalid Client ID")
+
         val user = userRepository.findByEmailOrUsername(emailOrUsername)
             ?: throw InvalidIdentifierException()
 

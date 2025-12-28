@@ -1,9 +1,11 @@
 package com.lilac.identity.di
 
+import com.lilac.identity.data.repository.ClientRepositoryImpl
 import com.lilac.identity.data.repository.MailRepositoryImpl
 import com.lilac.identity.data.repository.UserProfileRepositoryImpl
 import com.lilac.identity.data.repository.UserRepositoryImpl
 import com.lilac.identity.data.repository.VerificationTokenRepositoryImpl
+import com.lilac.identity.domain.repository.ClientRepository
 import com.lilac.identity.domain.repository.MailRepository
 import com.lilac.identity.domain.repository.UserProfileRepository
 import com.lilac.identity.domain.repository.UserRepository
@@ -17,4 +19,5 @@ val repositoryModule = module {
     singleOf(::UserProfileRepositoryImpl).bind<UserProfileRepository>()
     singleOf(::MailRepositoryImpl).bind<MailRepository>()
     singleOf(::VerificationTokenRepositoryImpl).bind<VerificationTokenRepository>()
+    singleOf(::ClientRepositoryImpl).bind<ClientRepository>()
 }

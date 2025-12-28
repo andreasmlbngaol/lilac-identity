@@ -19,7 +19,6 @@ class RegisterValidatorImplTest {
                 password = "SecurePass123",
                 firstName = "John",
                 lastName = "Doe",
-                audience = "test-audience"
             )
         )
 
@@ -35,7 +34,6 @@ class RegisterValidatorImplTest {
                 password = "SecurePass123",
                 firstName = "John",
                 lastName = "Doe",
-                audience = "test-audience"
             )
         ) as ValidationResult.Invalid
 
@@ -51,7 +49,6 @@ class RegisterValidatorImplTest {
                 password = "securepass123",
                 firstName = "John",
                 lastName = "Doe",
-                audience = "test-audience"
             )
         ) as ValidationResult.Invalid
 
@@ -70,7 +67,6 @@ class RegisterValidatorImplTest {
                 password = "SecurePass123",
                 firstName = "John1",
                 lastName = "Doe",
-                audience = "test-audience"
             )
         ) as ValidationResult.Invalid
 

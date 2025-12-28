@@ -29,7 +29,6 @@ class AuthRegisterTest {
                     password = " Test1234 ",
                     firstName = " Andreas ",
                     lastName = " Manatar ",
-                    audience = "test-audience"
                 )
             )
         }
@@ -51,7 +50,6 @@ class AuthRegisterTest {
                     password = "SecurePass123",
                     firstName = "John",
                     lastName = "Doe",
-                    audience = "test-audience"
                 )
             )
         }
@@ -67,7 +65,6 @@ class AuthRegisterTest {
             password = "Test1234",
             firstName = "Andreas",
             lastName = "Manatar",
-            audience = "test-audience"
         )
         client.post("/api/auth/register") {
             setBody(payload)
@@ -87,7 +84,6 @@ class AuthRegisterTest {
             password = "Test1234",
             firstName = "Andreas",
             lastName = "Manatar",
-            audience = "test-audience"
         )
         client.post("/api/auth/register") {
             setBody(payload)

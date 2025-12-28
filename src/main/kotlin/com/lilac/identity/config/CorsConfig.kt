@@ -20,6 +20,7 @@ fun Application.configureCors() {
         allowHeader(HttpHeaders.Authorization)
         allowHeader(HttpHeaders.ContentType)
         allowHeader(HttpHeaders.Accept)
+        allowHeader("X-Client-Id")
 
         allowCredentials = true
     }

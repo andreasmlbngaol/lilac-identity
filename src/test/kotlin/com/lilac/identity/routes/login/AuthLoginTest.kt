@@ -29,7 +29,6 @@ class AuthLoginTest {
         password = "Test1234",
         firstName = "Andreas",
         lastName = "Manatar",
-        audience = "test-audience"
     )
 
     private suspend fun ApplicationTestBuilder.registerUser() {
@@ -47,7 +46,6 @@ class AuthLoginTest {
                 LoginRequest(
                     identifier = "lgandre45@gmail.com",
                     password = "Test1234",
-                    audience = "test-audience"
                 )
             )
         }
@@ -68,7 +66,6 @@ class AuthLoginTest {
                 LoginRequest(
                     identifier = "andreasmlbngaol",
                     password = "Test1234",
-                    audience = "test-audience"
                 )
             )
         }
@@ -88,7 +85,6 @@ class AuthLoginTest {
                 LoginRequest(
                     identifier = "  ",
                     password = "",
-                    audience = "test-audience"
                 )
             )
         }
@@ -108,7 +104,6 @@ class AuthLoginTest {
                 LoginRequest(
                     identifier = "andreasmlbngaol@gmail.com",
                     password = "invalid-password",
-                    audience = "test-audience"
                 )
             )
         }
@@ -125,7 +120,6 @@ class AuthLoginTest {
                 LoginRequest(
                     identifier = registerRequest.email,
                     password = "falsepassword",
-                    audience = "test-audience"
                 )
             )
         }

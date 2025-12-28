@@ -4,6 +4,7 @@ import com.lilac.identity.config.*
 import com.lilac.identity.config.TestDatabaseFactory.configureTestDatabase
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.header
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -53,6 +54,7 @@ fun testApp(
         }
         install(DefaultRequest) {
             contentType(ContentType.Application.Json)
+            header("X-Client-Id", "test-client")
         }
     }
 

@@ -1,5 +1,6 @@
 package com.lilac.identity.config
 
+import com.lilac.identity.db.tables.ClientsTable
 import com.lilac.identity.db.tables.VerificationTokensTable
 import com.lilac.identity.db.tables.UserProfilesTable
 import com.lilac.identity.db.tables.UsersTable
@@ -7,6 +8,7 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
+import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 @Suppress("unused")
@@ -24,21 +26,36 @@ object TestDatabaseFactory {
 
         Database.connect(HikariDataSource(config))
         createTestTables()
+        seedClients()
     }
 
     fun createTestTables() = transaction {
         SchemaUtils.create(
             UsersTable,
             UserProfilesTable,
-            VerificationTokensTable
+            VerificationTokensTable,
+            ClientsTable
         )
+    }
+
+    fun seedClients() = transaction {
+        ClientsTable
+            .insert {
+                it[clientId] = "test-client"
+                it[name] = "Test Client"
+                it[audience] = "test-audience"
+                it[isActive] = true
+                it[createdAt] = System.currentTimeMillis()
+                it[updatedAt] = System.currentTimeMillis()
+            }
     }
 
     fun clearTestDatabase() = transaction {
         SchemaUtils.drop(
             VerificationTokensTable,
             UserProfilesTable,
-            UsersTable
+            UsersTable,
+            ClientsTable
         )
     }
 }

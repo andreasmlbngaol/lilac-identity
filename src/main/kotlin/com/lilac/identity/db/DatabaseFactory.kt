@@ -1,5 +1,6 @@
 package com.lilac.identity.db
 
+import com.lilac.identity.db.tables.ClientsTable
 import com.lilac.identity.db.tables.VerificationTokensTable
 import com.lilac.identity.db.tables.UserProfilesTable
 import com.lilac.identity.db.tables.UsersTable
@@ -38,7 +39,8 @@ object DatabaseFactory {
         SchemaUtils.create(
             UsersTable,
             UserProfilesTable,
-            VerificationTokensTable
+            VerificationTokensTable,
+            ClientsTable
         )
     }
 }

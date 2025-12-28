@@ -30,7 +30,11 @@ fun Route.authRoutes() {
                 firstName = unfilteredPayload.firstName.trim(),
                 lastName = unfilteredPayload.lastName.trim()
             )
-
+            val clientId = call.request.headers["X-Client-Id"]
+                ?: return@post call.respondError(
+                    HttpStatusCode.BadRequest,
+                    "Missing X-Client-Id header"
+                )
             val validationResult = RegisterValidator.validate(payload)
 
             if(validationResult is ValidationResult.Invalid)
@@ -47,7 +51,7 @@ fun Route.authRoutes() {
                 password = payload.password,
                 firstName = payload.firstName,
                 lastName = payload.lastName,
-                audience = payload.audience
+                clientId = clientId
             )
 
             call.respond(
@@ -66,6 +70,12 @@ fun Route.authRoutes() {
                 identifier = unfilteredPayload.identifier.lowercase().trim(),
                 password = unfilteredPayload.password.trim()
             )
+            val clientId = call.request.headers["X-Client-Id"]
+                ?: return@post call.respondError(
+                    HttpStatusCode.BadRequest,
+                    "Missing X-Client-Id header"
+                )
+
             if(payload.identifier.isBlank() || payload.password.isBlank()) {
                 return@post call.respondError(
                     HttpStatusCode.BadRequest,
@@ -76,7 +86,7 @@ fun Route.authRoutes() {
             val tokenPair = authUseCase.login(
                 emailOrUsername = payload.identifier,
                 password = payload.password,
-                audience = payload.audience
+                clientId = clientId
             )
             call.respond(
                 HttpStatusCode.OK,

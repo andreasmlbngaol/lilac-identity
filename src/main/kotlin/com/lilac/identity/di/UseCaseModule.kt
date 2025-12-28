@@ -14,6 +14,7 @@ val useCaseModule = module {
             userRepository = get(),
             userProfileRepository = get(),
             verificationTokenRepository = get(),
+            clientRepository = get(),
             mailRepository = get(),
             authTokenGenerator = get(),
             verificationTokenGenerator = get(),
