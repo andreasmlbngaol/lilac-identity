@@ -12,7 +12,7 @@ object RegisterValidator {
     const val MAX_NAME_LENGTH = 30
 
     val EMAIL_REGEX = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
-    val USERNAME_REGEX = Regex("^[a-zA-Z0-9_-]+$")
+    val USERNAME_REGEX = Regex("^[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)*$")
 
     fun validate(request: RegisterRequest): ValidationResult {
         val errors = mutableMapOf<String, String>()
