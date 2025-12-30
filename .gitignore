@@ -37,5 +37,5 @@ out/
 *.env
 .kotlin/
 .idea/
-*.pem
-keys
+keys/jwt_private.pem
+keys/jwt_public.pem

@@ -7,6 +7,7 @@ import com.lilac.identity.domain.repository.MailRepository
 import com.lilac.identity.domain.repository.UserProfileRepository
 import com.lilac.identity.domain.repository.UserRepository
 import com.lilac.identity.domain.repository.VerificationTokenRepository
+import com.lilac.identity.domain.service.AuthTokenDecoder
 import com.lilac.identity.domain.service.AuthTokenGenerator
 import com.lilac.identity.domain.service.Hasher
 import com.lilac.identity.domain.service.VerificationTokenDecoder
@@ -20,6 +21,7 @@ class AuthUseCase(
     private val clientRepository: ClientRepository,
     private val mailRepository: MailRepository,
     private val authTokenGenerator: AuthTokenGenerator,
+    private val authTokenDecoder: AuthTokenDecoder,
     private val verificationTokenGenerator: VerificationTokenGenerator,
     private val verificationTokenDecoder: VerificationTokenDecoder,
     private val passwordHasher: Hasher,
@@ -105,6 +107,26 @@ class AuthUseCase(
         passwordHasher.verify(password, user.passwordHash).let { verified ->
             if (!verified) throw InvalidIdentifierException()
         }
+
+        return generateTokenPair(
+            user = user,
+            audience = audience
+        )
+    }
+
+    suspend fun refresh(
+        refreshToken: String,
+        clientId: String
+    ): TokenPair {
+        val audience = clientRepository.findAudienceByClientId(clientId)
+            ?: throw InvalidIdentifierException("Invalid Client ID")
+
+        val claims = authTokenDecoder.decodeRefreshToken(refreshToken)
+            ?: throw InvalidTokenException("Invalid Refresh Token")
+
+        val userId = claims.userId
+        val user = userRepository.findById(userId)
+            ?: throw UserNotFoundException()
 
         return generateTokenPair(
             user = user,

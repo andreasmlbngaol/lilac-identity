@@ -92,6 +92,10 @@ class JwtAuthTokenService(
     }
 
     override fun decodeRefreshToken(token: String): RefreshTokenClaims? = try {
+        println(
+            "Token: $token"
+        )
+
         val decoded = verifier.verify(token)
         if(decoded.getClaim("type").asString() == AuthTokenType.Refresh.name) {
             RefreshTokenClaims(

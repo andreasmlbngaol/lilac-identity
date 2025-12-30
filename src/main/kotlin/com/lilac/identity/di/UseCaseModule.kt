@@ -17,6 +17,7 @@ val useCaseModule = module {
             clientRepository = get(),
             mailRepository = get(),
             authTokenGenerator = get(),
+            authTokenDecoder = get(),
             verificationTokenGenerator = get(),
             verificationTokenDecoder = get(),
             passwordHasher = get(named(HashAlgorithm.Bcrypt)),

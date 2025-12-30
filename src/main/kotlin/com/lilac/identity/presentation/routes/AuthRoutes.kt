@@ -4,11 +4,13 @@ import com.lilac.identity.domain.model.ValidationResult
 import com.lilac.identity.domain.usecase.AuthUseCase
 import com.lilac.identity.presentation.mapper.toDto
 import com.lilac.identity.presentation.request.LoginRequest
+import com.lilac.identity.presentation.request.RefreshTokenRequest
 import com.lilac.identity.presentation.request.RegisterRequest
 import com.lilac.identity.presentation.response.TokenPairResponse
 import com.lilac.identity.presentation.validator.RegisterValidator
 import com.lilac.identity.util.respondError
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.ApplicationCall
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -30,7 +32,7 @@ fun Route.authRoutes() {
                 firstName = unfilteredPayload.firstName.trim(),
                 lastName = unfilteredPayload.lastName.trim()
             )
-            val clientId = call.request.headers["X-Client-Id"]
+            val clientId = call.clientId
                 ?: return@post call.respondError(
                     HttpStatusCode.BadRequest,
                     "Missing X-Client-Id header"
@@ -70,7 +72,7 @@ fun Route.authRoutes() {
                 identifier = unfilteredPayload.identifier.lowercase().trim(),
                 password = unfilteredPayload.password.trim()
             )
-            val clientId = call.request.headers["X-Client-Id"]
+            val clientId = call.clientId
                 ?: return@post call.respondError(
                     HttpStatusCode.BadRequest,
                     "Missing X-Client-Id header"
@@ -97,6 +99,40 @@ fun Route.authRoutes() {
             )
         }
 
+        post("/refresh") {
+            val unfilteredPayload = call.receive<RefreshTokenRequest>()
+            val payload = unfilteredPayload.copy(
+                refreshToken = unfilteredPayload.refreshToken.trim()
+            )
+            if(payload.refreshToken.isBlank()) {
+                return@post call.respondError(
+                    HttpStatusCode.BadRequest,
+                    "Refresh token is required"
+                )
+            }
+            val clientId = call.clientId
+                ?: return@post call.respondError(
+                    HttpStatusCode.BadRequest,
+                    "Missing X-Client-Id header"
+                )
+
+            val tokenPair = authUseCase.refresh(
+                refreshToken = payload.refreshToken,
+                clientId = clientId
+            )
+
+            call.respond(
+                HttpStatusCode.OK,
+                TokenPairResponse(
+                    data = tokenPair.toDto(),
+                    message = "Refresh successful"
+                )
+            )
+        }
+
         verifyEmailRoutes(authUseCase)
     }
 }
+
+private val ApplicationCall.clientId: String?
+    get() = this.request.headers["X-Client-Id"]

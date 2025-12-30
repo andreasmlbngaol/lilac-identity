@@ -10,6 +10,7 @@ ktor:
 auth:
   realm: "Lilac Identity"
   privateKeyPath: ${PRIVATE_KEY_PATH}
+  publicKeyPath: ${PUBLIC_KEY_PATH}
   issuer: "lilac-identity"
   accessTokenExpInMins: 15
   refreshTokenExpInDays: 30
