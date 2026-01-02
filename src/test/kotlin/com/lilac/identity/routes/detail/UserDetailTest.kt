@@ -69,8 +69,10 @@ class UserDetailTest {
 
         assertEquals(body.data.id, userDetailResponse.data.id)
         assertEquals(body.data.username, registerRequest.username)
-        assertEquals(body.data.firstName, registerRequest.firstName)
-        assertEquals(body.data.lastName, registerRequest.lastName)
+        assertEquals(
+            body.data.name,
+            "${registerRequest.firstName} ${registerRequest.lastName}"
+        )
         assertNotNull(body.data.profile)
     }
 }

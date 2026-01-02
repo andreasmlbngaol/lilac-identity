@@ -27,7 +27,6 @@ fun UserDetail.toDto() = UserDetailDto(
 fun UserDetail.toPublicDto() = UserPublicDetailDto(
     id = this.id,
     username = this.username,
-    firstName = this.firstName,
-    lastName = this.lastName,
+    name = "${this.firstName} ${this.lastName}",
     profile = this.profile?.toDto(),
 )
