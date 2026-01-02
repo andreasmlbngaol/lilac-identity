@@ -14,6 +14,7 @@ import org.junit.After
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class UserDetailTest {
     @After
@@ -73,6 +74,8 @@ class UserDetailTest {
             body.data.name,
             "${registerRequest.firstName} ${registerRequest.lastName}"
         )
-        assertNotNull(body.data.profile)
+        assertNull(body.data.bio)
+        assertNull(body.data.profilePictureUrl)
+        assertNull(body.data.coverPictureUrl)
     }
 }
