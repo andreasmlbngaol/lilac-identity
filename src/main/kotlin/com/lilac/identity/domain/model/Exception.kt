@@ -11,3 +11,4 @@ class CreateUserException(message: String = "Failed to create user"): Exception(
 class CreateUserProfileException(message: String = "Failed to create user profile"): Exception(message)
 class InternalServerException(message: String = "Internal Server Error"): Exception(message)
 class EmailVerificationNotSentException(message: String = "Email verification not sent"): Exception(message)
+

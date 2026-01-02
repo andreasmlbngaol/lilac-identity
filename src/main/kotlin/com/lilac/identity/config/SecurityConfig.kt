@@ -1,6 +1,7 @@
 package com.lilac.identity.config
 
 import com.auth0.jwt.JWT
+import com.lilac.identity.domain.enum.AuthTokenType
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
@@ -27,7 +28,7 @@ fun Application.configureSecurity() {
                 payload.subject?.takeIf { it.isNotBlank() } ?: return@validate null
                 val type = payload.getClaim("type").asString()
 
-                if (type != "Access") return@validate null
+                if (type != AuthTokenType.Access.name) return@validate null
 
                 JWTPrincipal(payload)
             }

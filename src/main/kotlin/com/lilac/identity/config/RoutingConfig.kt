@@ -2,15 +2,13 @@ package com.lilac.identity.config
 
 import com.lilac.identity.presentation.response.HelloResponse
 import com.lilac.identity.presentation.routes.authRoutes
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.Application
-import io.ktor.server.plugins.openapi.openAPI
-import io.ktor.server.plugins.swagger.swaggerUI
-import io.ktor.server.response.respond
-import io.ktor.server.response.respondRedirect
-import io.ktor.server.routing.get
-import io.ktor.server.routing.route
-import io.ktor.server.routing.routing
+import com.lilac.identity.presentation.routes.userRoutes
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.openapi.*
+import io.ktor.server.plugins.swagger.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
     routing {
@@ -27,6 +25,7 @@ fun Application.configureRouting() {
             }
 
             authRoutes()
+            userRoutes()
         }
     }
 }

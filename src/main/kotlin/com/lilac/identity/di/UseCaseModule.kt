@@ -3,6 +3,7 @@ package com.lilac.identity.di
 import com.lilac.identity.data.enum.HashAlgorithm
 import com.lilac.identity.domain.usecase.AuthUseCase
 import com.lilac.identity.domain.usecase.TokenCleanupUseCase
+import com.lilac.identity.domain.usecase.UserUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -24,4 +25,6 @@ val useCaseModule = module {
             verificationTokenHasher = get(named(HashAlgorithm.HmacSha256)),
         )
     }
+
+    singleOf(::UserUseCase)
 }
